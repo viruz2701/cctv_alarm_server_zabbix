@@ -53,4 +53,117 @@ make status	Check status
 make logs	View logs
 make test	Run tests
 make monitor	Monitor events in real-time
+
+
+Configure Camera
+Dahua Camera
+Login to camera web interface
+
+Go to Settings → Network → Alarm Center
+
+Configure:
+
+Server IP: Your gateway external IP
+
+Port: 8081
+
+Protocol: HTTP
+
+Enable: ✓
+
+Go to Settings → Events → Event Settings
+
+Enable required events:
+
+Motion Detection
+
+Video Loss
+
+HDD Failure
+
+Hikvision Camera
+Login to camera web interface
+
+Go to Configuration → Network → Advanced Settings → Alarm
+
+Configure:
+
+Server IP: Your gateway external IP
+
+Port: 8081
+
+Protocol: HTTP
+
+Enable: ✓
+
+Step 4: Configure Zabbix
+Create Host
+Login to Zabbix web interface
+
+Go to Data collection → Hosts → Create host
+
+Fill:
+
+Host name: Alarm_Receiver
+
+Groups: Cameras
+
+Monitored by proxy: (your proxy if any)
+
+Create Item
+On host Alarm_Receiver, go to Items → Create item
+
+Fill:
+
+Name: Alarm Events
+
+Type: Zabbix trapper
+
+Key: alarm.event
+
+Type of information: Text
+
+History: 90d
+
+Create Triggers (Optional)
+Trigger	Expression
+Motion Detected	find(/Alarm_Receiver/alarm.event,,"like","Motion")=1
+Video Loss	find(/Alarm_Receiver/alarm.event,,"like","VideoLoss")=1
+HDD Error	find(/Alarm_Receiver/alarm.event,,"like","HDD")=1
          
+Configuration Parameters
+HTTP Server
+Parameter	Description	Default
+port	Listening port for HTTP alarms	8081
+debug	Enable debug logging	false
+Dahua Private Protocol
+Parameter	Description	Default
+enabled	Enable private protocol support	true
+ports	List of ports to listen	[37777, 37778]
+debug	Enable debug logging	false
+Hisilicon
+Parameter	Description	Default
+enabled	Enable Hisilicon support	true
+port	Listening port	15002
+debug	Enable debug logging	false
+Zabbix
+Parameter	Description	Default
+server	Zabbix server address	192.168.80.7
+port	Zabbix server port	10051
+sender	Path to zabbix_sender	/usr/bin/zabbix_sender
+Logging
+Parameter	Description	Default
+level	Log level	INFO
+file	Log file path	/var/log/alarm_receiver/receiver.log
+Port Selection
+Avoid using ports 80-90, 8080-8090, 160-170 (conflict with other services)
+
+Recommended ports:
+
+HTTP: 8081
+
+Private: 37777, 37778
+
+Hisilicon: 15002
+
+FTP: 2121
