@@ -1,0 +1,26 @@
+# Alarm Receiver Configuration v3.0
+
+http:
+  port: 8081
+
+dahua_private:
+  enabled: true
+  ports: [37777, 37778]
+
+hisilicon:
+  enabled: true
+  port: 15002
+
+zabbix:
+  server: "192.168.80.7"
+  port: 10051
+  sender: "/usr/bin/zabbix_sender"
+
+logging:
+  level: "INFO"
+
+ftp:
+  enabled: true
+  port: 2121
+  image_path: "/var/lib/alarm_receiver/images"
+  password: "alarm_pass"

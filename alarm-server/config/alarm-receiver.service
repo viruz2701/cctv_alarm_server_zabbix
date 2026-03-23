@@ -1,0 +1,19 @@
+[Unit]
+Description=Universal IP Camera Alarm Receiver
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/alarm_receiver
+ExecStart=/usr/bin/python3 /opt/alarm_receiver/alarm_receiver.py
+Restart=always
+RestartSec=10
+MemoryLimit=128M
+CPUQuota=50%
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
