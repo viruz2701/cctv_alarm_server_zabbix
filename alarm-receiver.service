@@ -1,0 +1,22 @@
+# config/alarm-receiver.service
+
+[Unit]
+Description=IP Camera Alarm Receiver for Zabbix
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/alarm_receiver
+ExecStart=/usr/local/bin/alarm_receiver.py
+Restart=always
+RestartSec=10
+MemoryLimit=128M
+CPUQuota=50%
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
