@@ -1,0 +1,56 @@
+alarm-server/
+├── README.md                    # Основная документация
+├── INSTALL.md                   # Инструкция по установке
+├── CONFIG.md                    # Конфигурация
+├── LICENSE                      # Лицензия (MIT)
+├── requirements.txt             # Зависимости Python
+├── Makefile                     # Утилиты для управления
+├── .gitignore                   # Игнорируемые файлы
+├── src/
+│   ├── alarm_receiver.py        # Основной скрипт
+│   ├── dahua_private.py         # Обработчик Dahua Private Protocol
+│   ├── hisilicon_server.py      # Обработчик Hisilicon
+│   └── utils.py                 # Утилиты
+├── config/
+│   ├── config.yaml.example      # Пример конфигурации
+│   └── alarm-receiver.service   # systemd сервис
+├── scripts/
+│   ├── alarm-monitor            # Мониторинг в реальном времени
+│   ├── alarm-stats              # Статистика
+│   └── alarm-debug              # Отладка
+├── templates/
+│   └── zbx_template_alarm.xml   # Шаблон Zabbix
+├── docs/
+│   ├── dahua_setup.md           # Настройка Dahua камер
+│   ├── hikvision_setup.md       # Настройка Hikvision камер
+│   └── troubleshooting.md       # Устранение проблем
+└── tests/
+    ├── test_http.py             # Тест HTTP
+    ├── test_private.py          # Тест приватного протокола
+    └── test_hisilicon.py        # Тест Hisilicon
+
+
+    Architecture
+
+[Camera] → (HTTP/Private/FTP) → [Alarm Server] → (zabbix_sender) → [Zabbix Server]
+              ↑                           ↑
+         Camera initiates          Minimal resource usage
+         (works behind NAT)        (< 50 MB RAM)
+
+Zabbix Integration
+Alarm Server sends events to Zabbix with format:
+
+{event_type}|{action}|{data}|{ip}
+
+Create a Zabbix trapper item with key alarm.event to receive events.
+
+🛠️ Commands
+Command	Description
+make install	Install alarm server
+make start	Start service
+make stop	Stop service
+make status	Check status
+make logs	View logs
+make test	Run tests
+make monitor	Monitor events in real-time
+         
